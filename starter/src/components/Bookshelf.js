@@ -7,7 +7,9 @@ const Bookshelf = ({ shelfType, bookList }) => {
       <h2 className="bookshelf-title">{shelfType}</h2>
       <div className="bookshelf-books">
         <ol className="books-grid">
-          <Book bookInfo={{}} />
+          {!bookList.length && <p>No books in this shelf</p>}
+          {bookList.length > 0 &&
+            bookList.map((book) => <Book bookInfo={book} key={book.id} />)}
         </ol>
       </div>
     </div>
