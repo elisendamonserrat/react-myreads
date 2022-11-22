@@ -16,10 +16,12 @@ const Home = () => {
 
     getBooks();
   }, []);
-    
+
+  // Filters each book depending on the shelf they are in
   const filterBooksByShelf = (shelf) =>
     allBooks.filter((book) => book.shelf === shelf);
 
+  // Every time that the state will render, the lists of books will be updated too - so there is no need to define them as state
   const readBooks = filterBooksByShelf("read");
   const currentBooks = filterBooksByShelf("currentlyReading");
   const wantToReadBooks = filterBooksByShelf("wantToRead");
