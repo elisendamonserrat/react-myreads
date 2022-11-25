@@ -175,3 +175,39 @@ body,
   text-align: center;
   font-size: 0.8em;
 }
+
+/* suggested search terms */
+.suggested-queries-container {
+  width: 90%;
+  max-width: 960px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.suggested-queries-list {
+  padding: .5em 3em 2em;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.suggested-queries-el {
+  margin: 0 2px;
+  padding: 4px 10px;
+  font-size: 80%;
+  font-family: sans-serif;
+  text-decoration: none;
+  text-transform: uppercase;
+  margin: 0.2em 0.25em;
+  border: 1px solid #999;
+  border-radius: 5px;
+  color: #999;
+}
+
+.suggested-queries-el:hover,
+.suggested-queries-el:focus {
+  background-color: #60ac5d;
+  color: #fff;
+  cursor: pointer;
+  text-decoration: underline;
+}
