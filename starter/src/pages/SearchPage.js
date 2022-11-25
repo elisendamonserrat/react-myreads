@@ -1,6 +1,64 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import * as ContactsAPI from "../BooksAPI";
+import Book from "../components/Book";
 
 const SearchPage = () => {
+  const [results, setResults] = useState([]);
+  const [query, setQuery] = useState("");
+  const [error, setError] = useState({
+    error: false,
+    message: "",
+  });
+
+  useEffect(() => {
+    const searchBooks = async () => {
+      const res = await ContactsAPI.search(query);
+      console.log("res", res);
+      // Handleling invalid queries that return undefined responses
+      if (!res)
+        return setError(() => ({
+          error: true,
+          message: "Invalid query, please try with another search term.",
+        }));
+
+      // Handleling API errors
+      if (res?.error) {
+        if (res.error === "empty query") {
+          return setError(() => {
+            return {
+              error: true,
+              message: `There are no results found for that query.`,
+            };
+          });
+        } else {
+          return setError(() => {
+            return {
+              error: true,
+              message: `It has been an error. ${res.error}`,
+            };
+          });
+        }
+      }
+
+      setResults(res);
+      setError(() => {
+        return {
+          error: false,
+          message: "",
+        };
+      });
+    };
+    if (query === "") return;
+    searchBooks();
+  }, [query]);
+
+  const showingResults =
+    query === ""
+      ? []
+      : results.filter((c) =>
+          c.title.toLowerCase().includes(query.toLowerCase())
+        );
+
   return (
     <div className="search-books">
       <div className="search-books-bar">
@@ -8,12 +66,22 @@ const SearchPage = () => {
           Close
         </a>
         <div className="search-books-input-wrapper">
-          <input type="text" placeholder="Search by title, author, or ISBN" />
+          <input
+            type="text"
+            placeholder="Search by title, author, or ISBN"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
         </div>
       </div>
       <div className="search-books-results">
-        <ol className="books-grid"></ol>
+        <ol className="books-grid">
+          {showingResults.map((book) => (
+            <Book bookInfo={book} key={book.id} />
+          ))}
+        </ol>
       </div>
+      <div>{error.error && <p>{error.message}</p>}</div>
     </div>
   );
 };

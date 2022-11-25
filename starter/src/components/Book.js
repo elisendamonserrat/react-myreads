@@ -2,11 +2,15 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const Book = ({ bookInfo }) => {
-  const {
-    title,
-    authors,
-    imageLinks: { thumbnail },
-  } = bookInfo;
+  const { title, authors, imageLinks } = bookInfo;
+
+  const authorsInfo = !authors
+    ? "The book's are not known"
+    : authors.map((author) => author);
+
+  const thumbnailImg = imageLinks?.thumbnail
+    ? imageLinks.thumbnail
+    : "thumbnail";
 
   const checkBookShelf = (value) => (bookInfo.shelf === value ? true : false);
   return (
@@ -18,7 +22,7 @@ const Book = ({ bookInfo }) => {
             style={{
               width: 128,
               height: 193,
-              backgroundImage: `url(${thumbnail})`,
+              backgroundImage: `url(${thumbnailImg})`,
             }}
           ></div>
           <div className="book-shelf-changer">
@@ -34,7 +38,7 @@ const Book = ({ bookInfo }) => {
           </div>
         </div>
         <div className="book-title">{title}</div>
-        <div className="book-authors">{authors.map((author) => author)}</div>
+        <div className="book-authors">{authorsInfo}</div>
       </div>
     </li>
   );
