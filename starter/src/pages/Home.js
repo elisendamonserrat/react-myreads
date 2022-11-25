@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
 import * as ContactsAPI from "../BooksAPI";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import Bookshelf from "../components/Bookshelf";
 import { Title } from "../components/Title";
 
@@ -48,7 +49,7 @@ const Home = () => {
         </div>
       </div>
       <div className="open-search">
-        <a onClick={() => {}}>Add a book</a>
+        <Link to="/search"> Add a book</Link>
       </div>
     </div>
   );

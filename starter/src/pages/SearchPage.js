@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import * as ContactsAPI from "../BooksAPI";
 import Book from "../components/Book";
 
@@ -95,7 +96,6 @@ const SearchPage = () => {
   useEffect(() => {
     const searchBooks = async () => {
       const res = await ContactsAPI.search(query);
-      console.log("res", res);
       // Handleling invalid queries that return undefined responses
       if (!res)
         return setError(() => ({
@@ -144,9 +144,9 @@ const SearchPage = () => {
   return (
     <div className="search-books">
       <div className="search-books-bar">
-        <a href="#" className="close-search" onClick={() => {}}>
+        <Link to="/" className="close-search">
           Close
-        </a>
+        </Link>
         <div className="search-books-input-wrapper">
           <input
             type="text"
