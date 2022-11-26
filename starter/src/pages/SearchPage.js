@@ -2,88 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import * as ContactsAPI from "../BooksAPI";
 import Book from "../components/Book";
-
-const validSearchTerms = [
-  "Android",
-  "Art",
-  "Artificial Intelligence",
-  "Astronomy",
-  "Austen",
-  "Baseball",
-  "Basketball",
-  "Bhagat",
-  "Biography",
-  "Brief",
-  "Business",
-  "Camus",
-  "Cervantes",
-  "Christie",
-  "Classics",
-  "Comics",
-  "Cook",
-  "Cricket",
-  "Cycling",
-  "Desai",
-  "Design",
-  "Development",
-  "Digital Marketing",
-  "Drama",
-  "Drawing",
-  "Dumas",
-  "Education",
-  "Everything",
-  "Fantasy",
-  "Film",
-  "Finance",
-  "First",
-  "Fitness",
-  "Football",
-  "Future",
-  "Games",
-  "Gandhi",
-  "Homer",
-  "Horror",
-  "Hugo",
-  "Ibsen",
-  "Journey",
-  "Kafka",
-  "King",
-  "Lahiri",
-  "Larsson",
-  "Learn",
-  "Literary Fiction",
-  "Make",
-  "Manage",
-  "Marquez",
-  "Money",
-  "Mystery",
-  "Negotiate",
-  "Painting",
-  "Philosophy",
-  "Photography",
-  "Poetry",
-  "Production",
-  "Programming",
-  "React",
-  "Redux",
-  "River",
-  "Robotics",
-  "Rowling",
-  "Satire",
-  "Science Fiction",
-  "Shakespeare",
-  "Singh",
-  "Swimming",
-  "Tale",
-  "Thrun",
-  "Time",
-  "Tolstoy",
-  "Travel",
-  "Ultimate",
-  "Virtual Reality",
-  "Web Development",
-  "iOS",
-];
+import { SuggestedSearchTerms } from "../components/SuggestedSearchTerms";
 
 const SearchPage = () => {
   const [results, setResults] = useState([]);
@@ -141,6 +60,8 @@ const SearchPage = () => {
           c.title.toLowerCase().includes(query.toLowerCase())
         );
 
+  const handleUpdateQuery = (term) => setQuery(term);
+
   return (
     <div className="search-books">
       <div className="search-books-bar">
@@ -163,26 +84,12 @@ const SearchPage = () => {
           ))}
         </ol>
       </div>
-      <div className="suggested-queries-container">
-        {error.error && (
-          <div>
-            <h3>{error.message} Try with one of the following terms:</h3>
-            <div className="suggested-queries-list">
-              {validSearchTerms.map((term, i) => {
-                return (
-                  <div
-                    key={i}
-                    onClick={() => setQuery(term)}
-                    className="suggested-queries-el"
-                  >
-                    {term}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
-      </div>
+      {error.error && (
+        <SuggestedSearchTerms
+          message={error.message}
+          updateQuery={handleUpdateQuery}
+        />
+      )}
     </div>
   );
 };
