@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const Book = ({ bookInfo }) => {
+const Book = ({ bookInfo, shelfTypeValue }) => {
   const { title, authors, imageLinks } = bookInfo;
 
   const authorsInfo = !authors
@@ -12,7 +12,6 @@ const Book = ({ bookInfo }) => {
     ? imageLinks.thumbnail
     : "thumbnail";
 
-  const checkBookShelf = (value) => (bookInfo.shelf === value ? true : false);
   return (
     <li>
       <div className="book">
@@ -26,7 +25,7 @@ const Book = ({ bookInfo }) => {
             }}
           ></div>
           <div className="book-shelf-changer">
-            <select value={bookInfo.shelf}>
+            <select value={shelfTypeValue}>
               <option value="none" disabled>
                 Move to...
               </option>
@@ -48,4 +47,5 @@ export default Book;
 
 Book.propTypes = {
   bookInfo: PropTypes.object.isRequired,
+  shelfTypeValue: PropTypes.string.isRequired,
 };

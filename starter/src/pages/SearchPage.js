@@ -68,7 +68,17 @@ const SearchPage = ({ userBooks }) => {
           c.title.toLowerCase().includes(query.toLowerCase())
         );
 
+  // Function that gets passed as a cb to SuggestedSearchTerms
+  // and that updates the query state
   const handleUpdateQuery = (term) => setQuery(term);
+
+  // Checking if the user has the searched books in its shelfs and, if so, in which one
+  const checkBookInShelf = (bookFound) => {
+    const bookInUsersList = userBooks.filter(
+      (book) => book.id === bookFound.id
+    );
+    return !bookInUsersList.length ? "none" : bookInUsersList[0].shelf;
+  };
 
   return (
     <div className="search-books">
@@ -88,7 +98,11 @@ const SearchPage = ({ userBooks }) => {
       <div className="search-books-results">
         <ol className="books-grid">
           {showingResults.map((book) => (
-            <Book bookInfo={book} key={book.id} />
+            <Book
+              bookInfo={book}
+              key={book.id}
+              shelfTypeValue={checkBookInShelf(book)}
+            />
           ))}
         </ol>
       </div>
