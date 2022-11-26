@@ -13,6 +13,9 @@ const SearchPage = () => {
   });
 
   useEffect(() => {
+    // Hanlder of the clean up function
+    let isCancelled = false;
+
     const searchBooks = async () => {
       const res = await ContactsAPI.search(query);
       // Handleling invalid queries that return undefined responses
@@ -50,7 +53,12 @@ const SearchPage = () => {
       });
     };
     if (query === "") return;
-    searchBooks();
+    if (!isCancelled) searchBooks();
+
+    // Clean up function to abord API Calls
+    return () => {
+      isCancelled = true;
+    };
   }, [query]);
 
   const showingResults =
