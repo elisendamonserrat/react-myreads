@@ -4,7 +4,7 @@ import * as ContactsAPI from "../BooksAPI";
 import Book from "../components/Book";
 import { SuggestedSearchTerms } from "../components/SuggestedSearchTerms";
 
-const SearchPage = () => {
+const SearchPage = ({ userBooks }) => {
   const [results, setResults] = useState([]);
   const [query, setQuery] = useState("");
   const [error, setError] = useState({
