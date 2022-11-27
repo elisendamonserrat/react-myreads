@@ -2,6 +2,7 @@ import React from "react";
 import Book from "./Book";
 import PropTypes from "prop-types";
 import { bookShelfOptions } from "../utils";
+import { BooksGridContainer } from "./BooksGridContainer";
 
 const Bookshelf = ({ shelfType, bookList, updateShelf }) => {
   // Checking in which shelf is each book
@@ -15,7 +16,7 @@ const Bookshelf = ({ shelfType, bookList, updateShelf }) => {
     <div className="bookshelf">
       <h2 className="bookshelf-title">{shelfType}</h2>
       <div className="bookshelf-books">
-        <ol className="books-grid">
+        <BooksGridContainer>
           {!bookList.length && <p>No books in this shelf</p>}
           {bookList.length > 0 &&
             bookList.map((book) => (
@@ -26,7 +27,7 @@ const Bookshelf = ({ shelfType, bookList, updateShelf }) => {
                 updateBookShelf={handleUpdateBookShelf}
               />
             ))}
-        </ol>
+        </BooksGridContainer>
       </div>
     </div>
   );

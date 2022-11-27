@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import * as ContactsAPI from "../BooksAPI";
 import Book from "../components/Book";
+import { BooksGridContainer } from "../components/BooksGridContainer";
+import SearchInput from "../components/SearchInput";
 import { SuggestedSearchTerms } from "../components/SuggestedSearchTerms";
 import { useDebounce } from "../hooks/useDebounce";
 
@@ -13,6 +15,7 @@ const defaultErrorState = {
 const SearchPage = ({ userBooks, updateUserBooks }) => {
   const [results, setResults] = useState([]);
   const [query, setQuery] = useState("");
+  const [status, setStatus] = useState("idle");
   const [error, setError] = useState({
     error: false,
     message: "",
@@ -22,34 +25,42 @@ const SearchPage = ({ userBooks, updateUserBooks }) => {
   const fetchData = async (value) => {
     setError(defaultErrorState);
     try {
+      setStatus('loading')
       const res = await ContactsAPI.search(value);
+      setStatus("loaded");
       // Handleling invalid queries that return undefined responses
-      if (!res)
-        return setError(() => ({
+      if (!res) {
+        setError(() => ({
           error: true,
           message: "Invalid query, please try with another search term.",
         }));
+        setResults([]);
+      }
 
       // Handleling API errors
       if (res?.error) {
         if (res.error === "empty query") {
-          return setError(() => {
+          setError(() => {
             return {
               error: true,
               message: `There are no results found for that query.`,
             };
           });
+          setResults([]);
         } else {
-          return setError(() => {
+          setError(() => {
             return {
               error: true,
-              message: `It has been an error. ${res.error}`,
+              message: `There has has been an error. ${res.error}`,
             };
           });
+          setResults([]);
         }
+      } else {
+        setResults(res);
       }
-      setResults(res);
     } catch (error) {
+      setStatus("loaded");
       setResults([]);
       setError({
         error: true,
@@ -75,10 +86,6 @@ const SearchPage = ({ userBooks, updateUserBooks }) => {
     };
   }, [handleDebounce]);
 
-  const showingResults = results.filter((c) =>
-    c.title.toLowerCase().includes(query.toLowerCase())
-  );
-
   // Function that gets passed as a cb to SuggestedSearchTerms
   // and that updates the query state
   const handleUpdateQuery = (term) => setQuery(term);
@@ -92,8 +99,7 @@ const SearchPage = ({ userBooks, updateUserBooks }) => {
   };
 
   const handleUpdateShelf = (book, shelf) => {
-    console.log("handleUpdateShelf", handleUpdateShelf);
-    updateUserBooks(book, shelf)
+    updateUserBooks(book, shelf);
   };
   return (
     <div className="search-books">
@@ -101,26 +107,25 @@ const SearchPage = ({ userBooks, updateUserBooks }) => {
         <Link to="/" className="close-search">
           Close
         </Link>
-        <div className="search-books-input-wrapper">
-          <input
-            type="text"
-            placeholder="Search by title, author, or ISBN"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-        </div>
+        <SearchInput
+          query={query}
+          placeholder={"Search by title, author, or ISBN"}
+          updateQuery={handleUpdateQuery}
+        />
       </div>
       <div className="search-books-results">
-        <ol className="books-grid">
-          {showingResults.map((book) => (
-            <Book
-              bookInfo={book}
-              key={book.id}
-              shelfTypeValue={checkBookInShelf(book)}
-              updateBookShelf={handleUpdateShelf}
-            />
-          ))}
-        </ol>
+        <BooksGridContainer>
+          {status === "loading" && <p>Is loading</p>}
+          {status === "loaded" &&
+            results.map((book) => (
+              <Book
+                bookInfo={book}
+                key={book.id}
+                shelfTypeValue={checkBookInShelf(book)}
+                updateBookShelf={handleUpdateShelf}
+              />
+            ))}
+        </BooksGridContainer>
       </div>
       {error.error && (
         <SuggestedSearchTerms
