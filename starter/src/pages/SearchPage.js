@@ -6,6 +6,7 @@ import { BooksGridContainer } from "../components/BooksGridContainer";
 import SearchInput from "../components/SearchInput";
 import { SuggestedSearchTerms } from "../components/SuggestedSearchTerms";
 import { useDebounce } from "../hooks/useDebounce";
+import { checkBookInShelf } from "../utils/index";
 
 const defaultErrorState = {
   error: false,
@@ -25,7 +26,7 @@ const SearchPage = ({ userBooks, updateUserBooks }) => {
   const fetchData = async (value) => {
     setError(defaultErrorState);
     try {
-      setStatus('loading')
+      setStatus("loading");
       const res = await ContactsAPI.search(value);
       setStatus("loaded");
       // Handleling invalid queries that return undefined responses
@@ -86,21 +87,14 @@ const SearchPage = ({ userBooks, updateUserBooks }) => {
     };
   }, [handleDebounce]);
 
-  // Function that gets passed as a cb to SuggestedSearchTerms
-  // and that updates the query state
+  // Updating the query state
   const handleUpdateQuery = (term) => setQuery(term);
 
-  // Checking if the user has the searched books in its shelfs and, if so, in which one
-  const checkBookInShelf = (bookFound) => {
-    const bookInUsersList = userBooks.filter(
-      (book) => book.id === bookFound.id
-    );
-    return !bookInUsersList.length ? "none" : bookInUsersList[0].shelf;
-  };
-
+  // cb passed from Search page to update the shelf type
   const handleUpdateShelf = (book, shelf) => {
     updateUserBooks(book, shelf);
   };
+
   return (
     <div className="search-books">
       <div className="search-books-bar">
@@ -121,7 +115,7 @@ const SearchPage = ({ userBooks, updateUserBooks }) => {
               <Book
                 bookInfo={book}
                 key={book.id}
-                shelfTypeValue={checkBookInShelf(book)}
+                shelfTypeValue={checkBookInShelf(book, userBooks)}
                 updateBookShelf={handleUpdateShelf}
               />
             ))}

@@ -1,16 +1,13 @@
 import { Link } from "react-router-dom";
 import Bookshelf from "../components/Bookshelf";
 import { Title } from "../components/Title";
+import { filterBooksByShelf } from "../utils";
 
 const Home = ({ userBooks, status, updateUserBooks }) => {
-  // Filters each book depending on the shelf they are in
-  const filterBooksByShelf = (shelf) =>
-    userBooks.filter((book) => book.shelf === shelf);
-
   // Every time that the state will render, the lists of books will be updated too - so there is no need to define them as state
-  const readBooks = filterBooksByShelf("read");
-  const currentBooks = filterBooksByShelf("currentlyReading");
-  const wantToReadBooks = filterBooksByShelf("wantToRead");
+  const readBooks = filterBooksByShelf("read", userBooks);
+  const currentBooks = filterBooksByShelf("currentlyReading", userBooks);
+  const wantToReadBooks = filterBooksByShelf("wantToRead", userBooks);
 
   const handleUpdateBook = (book, shelf) => updateUserBooks(book, shelf);
 
