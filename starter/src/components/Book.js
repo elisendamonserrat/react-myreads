@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import {
   bookShelfOptions,
@@ -7,7 +8,13 @@ import {
 } from "../utils";
 
 const Book = ({ bookInfo, shelfTypeValue, updateBookShelf }) => {
-  const { title, authors, imageLinks } = bookInfo;
+  const { title, authors, imageLinks, id } = bookInfo;
+
+  let navigate = useNavigate();
+
+  const goDetailsPage = () => {
+    navigate(`/book/${id}`, { state: { book: bookInfo } });
+  };
 
   const handleChange = (e) => {
     const shelf = e.target.value;
@@ -41,6 +48,7 @@ const Book = ({ bookInfo, shelfTypeValue, updateBookShelf }) => {
         <div className="book-title">{title}</div>
         <div className="book-authors">{checkAuthorsDetails(authors)}</div>
       </div>
+      <button onClick={goDetailsPage} className="btn-default">More Info</button>
     </li>
   );
 };

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import SearchPage from "./pages/SearchPage";
+import BookDetail from "./pages/BookDetail";
 
 function App() {
   const [userBooks, setUserBooks] = useState([]);
@@ -68,6 +69,7 @@ function App() {
           />
         }
       />
+      <Route exact path="/book/:id" element={<BookDetail />} />
     </Routes>
   );
 }
