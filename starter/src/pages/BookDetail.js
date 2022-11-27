@@ -2,18 +2,14 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Title } from "../components/Title";
 import { useLocation } from "react-router-dom";
-import {
-  bookShelfOptions,
-  checkAuthorsDetails,
-  checkThumbnailImg,
-} from "../utils";
+import { checkAuthorsDetails, checkThumbnailImg } from "../utils";
 
 const BookDetail = () => {
   let location = useLocation();
   const {
     state: { book },
   } = location;
-  console.log(book);
+
   return (
     <div className="list-books">
       <Title title={"Book Information Page"} />
@@ -35,22 +31,9 @@ const BookDetail = () => {
                 backgroundImage: `url(${checkThumbnailImg(book.imageLinks)})`,
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "100% 100%",
-                position: 'relative',
+                position: "relative",
               }}
-            >
-              <div className="book-shelf-changer book-shelf-changer--bg">
-                <select value={"none"} onChange={() => {}}>
-                  <option value="none" disabled>
-                    Move to...
-                  </option>
-                  {bookShelfOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.text}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
+            ></div>
           </div>
           <div className="book-details-container-info">
             <h2
