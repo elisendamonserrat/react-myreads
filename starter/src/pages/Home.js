@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import Bookshelf from "../components/Bookshelf";
 import { Title } from "../components/Title";
 import { filterBooksByShelf } from "../utils";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const Home = ({ userBooks, status, updateUserBooks }) => {
   // Every time that the state will render, the lists of books will be updated too - so there is no need to define them as state
@@ -16,7 +17,7 @@ const Home = ({ userBooks, status, updateUserBooks }) => {
       <Title title={"My Reads"} />
       <div className="list-books-content">
         <div>
-          {status === "loading" && <p>Loading your books</p>}
+          {status === "loading" && <LoadingSpinner />}
           {status === "loaded" && (
             <>
               <Bookshelf

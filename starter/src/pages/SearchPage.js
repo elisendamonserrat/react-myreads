@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import * as ContactsAPI from "../BooksAPI";
 import Book from "../components/Book";
-import { BooksGridContainer } from "../components/BooksGridContainer";
+import LoadingSpinner from "../components/LoadingSpinner";
 import SearchInput from "../components/SearchInput";
+import { BooksGridContainer } from "../components/BooksGridContainer";
 import { SuggestedSearchTerms } from "../components/SuggestedSearchTerms";
 import { useDebounce } from "../hooks/useDebounce";
 import { checkBookInShelf } from "../utils/index";
@@ -109,7 +110,7 @@ const SearchPage = ({ userBooks, updateUserBooks }) => {
       </div>
       <div className="search-books-results">
         <BooksGridContainer>
-          {status === "loading" && <p>Is loading</p>}
+          {status === "loading" && <LoadingSpinner />}
           {status === "loaded" &&
             results.map((book) => (
               <Book
