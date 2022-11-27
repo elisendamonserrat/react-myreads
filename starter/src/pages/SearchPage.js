@@ -3,6 +3,12 @@ import { Link } from "react-router-dom";
 import * as ContactsAPI from "../BooksAPI";
 import Book from "../components/Book";
 import { SuggestedSearchTerms } from "../components/SuggestedSearchTerms";
+import { useDebounce } from "../hooks/useDebounce";
+
+const defaultErrorState = {
+  error: false,
+  message: "",
+};
 
 const SearchPage = ({ userBooks }) => {
   const [results, setResults] = useState([]);
@@ -11,13 +17,12 @@ const SearchPage = ({ userBooks }) => {
     error: false,
     message: "",
   });
+  const handleDebounce = useDebounce(query, 500);
 
-  useEffect(() => {
-    // Hanlder of the clean up function
-    let isCancelled = false;
-
-    const searchBooks = async () => {
-      const res = await ContactsAPI.search(query);
+  const fetchData = async (value) => {
+    setError(defaultErrorState);
+    try {
+      const res = await ContactsAPI.search(value);
       // Handleling invalid queries that return undefined responses
       if (!res)
         return setError(() => ({
@@ -43,30 +48,36 @@ const SearchPage = ({ userBooks }) => {
           });
         }
       }
-
       setResults(res);
-      setError(() => {
-        return {
-          error: false,
-          message: "",
-        };
+    } catch (error) {
+      setResults([]);
+      setError({
+        error: true,
+        message: error,
       });
-    };
-    if (query === "") return;
-    if (!isCancelled) searchBooks();
+    }
+  };
 
+  useEffect(() => {
+    // Handler of the clean up function
+    let isCancelled = false;
+
+    // If the query is empty "" - we don't call the API but we reset results to [] and errors to their default state
+    if (!handleDebounce) {
+      setResults([]);
+      setError(defaultErrorState);
+    } else if (!isCancelled) {
+      fetchData(handleDebounce);
+    }
     // Clean up function to abord API Calls
     return () => {
       isCancelled = true;
     };
-  }, [query]);
+  }, [handleDebounce]);
 
-  const showingResults =
-    query === ""
-      ? []
-      : results.filter((c) =>
-          c.title.toLowerCase().includes(query.toLowerCase())
-        );
+  const showingResults = results.filter((c) =>
+    c.title.toLowerCase().includes(query.toLowerCase())
+  );
 
   // Function that gets passed as a cb to SuggestedSearchTerms
   // and that updates the query state
