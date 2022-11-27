@@ -1,3 +1,5 @@
+import NoBookCover from "../images/no-cover.gif";
+
 export const bookShelfOptions = [
   { text: "Currently reading", value: "currentlyReading" },
   { text: "Want to Read", value: "wantToRead" },
@@ -18,7 +20,7 @@ export const checkAuthorsDetails = (authorsArr) => {
 
 // Checking if a book has thumbnail or not
 export const checkThumbnailImg = (imgArr) => {
-  return imgArr?.thumbnail ? imgArr.thumbnail : "thumbnail";
+  return imgArr?.thumbnail ? imgArr.thumbnail : NoBookCover;
 };
 
 // Filters each book depending on the shelf they are in
