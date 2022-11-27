@@ -35,7 +35,10 @@ const Book = ({ bookInfo, shelfTypeValue, updateBookShelf }) => {
                 Move to...
               </option>
               {bookShelfOptions.map((option) => (
-                <option key={option.value} value={option.value}>
+                <option
+                  key={option.value}
+                  value={option.value}
+                >
                   {option.text}
                 </option>
               ))}

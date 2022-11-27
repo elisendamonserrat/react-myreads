@@ -29,10 +29,19 @@ function App() {
       const updateBooksBE = await ContactsAPI.update(book, shelf);
 
       // Updating the books in the FE and triggering re-render
-      const updateUserBook = [...userBooks]
-        .filter((listedBook) => listedBook.id === book.id)
-        .map((book) => (book.shelf = shelf));
-      setUserBooks((prev) => [...prev, updateUserBook]);
+      // Check if the book is already in the userBooks arr, if not add the shelf property to the obj
+      const isTheBookInShelf = userBooks.some(
+        (userBook) => userBook.id === book.id
+      );
+      if (isTheBookInShelf) {
+        let updateCurrentUserBooks = [...userBooks].map((el) =>
+          el.id === book.id ? { ...el, shelf: shelf } : el
+        );
+        setUserBooks(updateCurrentUserBooks);
+      } else {
+        const newBook = { ...book, shelf: shelf };
+        setUserBooks((prev) => [...prev, newBook]);
+      }
     } catch (error) {
       setStatus("error");
     }
@@ -50,7 +59,15 @@ function App() {
           />
         }
       />
-      <Route path="/search" element={<SearchPage userBooks={userBooks} />} />
+      <Route
+        path="/search"
+        element={
+          <SearchPage
+            userBooks={userBooks}
+            updateUserBooks={handleUpdateUserBooks}
+          />
+        }
+      />
     </Routes>
   );
 }

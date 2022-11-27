@@ -10,7 +10,7 @@ const defaultErrorState = {
   message: "",
 };
 
-const SearchPage = ({ userBooks }) => {
+const SearchPage = ({ userBooks, updateUserBooks }) => {
   const [results, setResults] = useState([]);
   const [query, setQuery] = useState("");
   const [error, setError] = useState({
@@ -91,6 +91,10 @@ const SearchPage = ({ userBooks }) => {
     return !bookInUsersList.length ? "none" : bookInUsersList[0].shelf;
   };
 
+  const handleUpdateShelf = (book, shelf) => {
+    console.log("handleUpdateShelf", handleUpdateShelf);
+    updateUserBooks(book, shelf)
+  };
   return (
     <div className="search-books">
       <div className="search-books-bar">
@@ -113,6 +117,7 @@ const SearchPage = ({ userBooks }) => {
               bookInfo={book}
               key={book.id}
               shelfTypeValue={checkBookInShelf(book)}
+              updateBookShelf={handleUpdateShelf}
             />
           ))}
         </ol>
