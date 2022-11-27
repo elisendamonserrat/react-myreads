@@ -1,17 +1,15 @@
 import React from "react";
 import Book from "./Book";
 import PropTypes from "prop-types";
+import { bookShelfOptions } from "../utils";
 
-const Bookshelf = ({ shelfType, bookList }) => {
-  const bookShelf = [
-    { name: "Currently reading", value: "currentlyReading" },
-    { name: "Want to Read", value: "wantToRead" },
-    { name: "Read", value: "read" },
-    { name: "None", value: "none" },
-  ];
-
+const Bookshelf = ({ shelfType, bookList, updateShelf }) => {
   // Checking in which shelf is each book
-  const checkShelfValue = bookShelf.filter((shelf) => shelf.name === shelfType);
+  const checkShelfValue = bookShelfOptions.filter(
+    (shelf) => shelf.text === shelfType
+  );
+
+  const handleUpdateBookShelf = (book, shelf) => updateShelf(book, shelf);
 
   return (
     <div className="bookshelf">
@@ -25,6 +23,7 @@ const Bookshelf = ({ shelfType, bookList }) => {
                 bookInfo={book}
                 key={book.id}
                 shelfTypeValue={checkShelfValue[0].value}
+                updateBookShelf={handleUpdateBookShelf}
               />
             ))}
         </ol>

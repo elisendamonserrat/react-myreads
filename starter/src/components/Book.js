@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { bookShelfOptions } from "../utils";
 
-const Book = ({ bookInfo, shelfTypeValue }) => {
+const Book = ({ bookInfo, shelfTypeValue, updateBookShelf }) => {
   const { title, authors, imageLinks } = bookInfo;
 
   const authorsInfo = !authors
@@ -12,6 +13,10 @@ const Book = ({ bookInfo, shelfTypeValue }) => {
     ? imageLinks.thumbnail
     : "thumbnail";
 
+  const handleChange = (e) => {
+    const shelf = e.target.value;
+    updateBookShelf(bookInfo, shelf);
+  };
   return (
     <li>
       <div className="book">
@@ -25,14 +30,15 @@ const Book = ({ bookInfo, shelfTypeValue }) => {
             }}
           ></div>
           <div className="book-shelf-changer">
-            <select value={shelfTypeValue}>
+            <select value={shelfTypeValue} onChange={handleChange}>
               <option value="none" disabled>
                 Move to...
               </option>
-              <option value="currentlyReading">Currently Reading</option>
-              <option value="wantToRead">Want to Read</option>
-              <option value="read">Read</option>
-              <option value="none">None</option>
+              {bookShelfOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.text}
+                </option>
+              ))}
             </select>
           </div>
         </div>

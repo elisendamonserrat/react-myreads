@@ -11,19 +11,44 @@ function App() {
 
   useEffect(() => {
     const getBooks = async () => {
-      const res = await ContactsAPI.getAll();
-      setUserBooks(res);
-      setStatus("loaded");
+      try {
+        const res = await ContactsAPI.getAll();
+        setUserBooks(res);
+        setStatus("loaded");
+      } catch (error) {
+        setStatus("error");
+      }
     };
 
     getBooks();
   }, []);
+
+  const handleUpdateUserBooks = async (book, shelf) => {
+    try {
+      // API Call to update the books in the BE
+      const updateBooksBE = await ContactsAPI.update(book, shelf);
+
+      // Updating the books in the FE and triggering re-render
+      const updateUserBook = [...userBooks]
+        .filter((listedBook) => listedBook.id === book.id)
+        .map((book) => (book.shelf = shelf));
+      setUserBooks((prev) => [...prev, updateUserBook]);
+    } catch (error) {
+      setStatus("error");
+    }
+  };
   return (
     <Routes>
       <Route
         exact
         path="/"
-        element={<Home status={status} userBooks={userBooks} />}
+        element={
+          <Home
+            status={status}
+            userBooks={userBooks}
+            updateUserBooks={handleUpdateUserBooks}
+          />
+        }
       />
       <Route path="/search" element={<SearchPage userBooks={userBooks} />} />
     </Routes>

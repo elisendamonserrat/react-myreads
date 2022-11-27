@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import Bookshelf from "../components/Bookshelf";
 import { Title } from "../components/Title";
 
-const Home = ({ userBooks, status }) => {
+const Home = ({ userBooks, status, updateUserBooks }) => {
   // Filters each book depending on the shelf they are in
   const filterBooksByShelf = (shelf) =>
     userBooks.filter((book) => book.shelf === shelf);
@@ -11,6 +11,8 @@ const Home = ({ userBooks, status }) => {
   const readBooks = filterBooksByShelf("read");
   const currentBooks = filterBooksByShelf("currentlyReading");
   const wantToReadBooks = filterBooksByShelf("wantToRead");
+
+  const handleUpdateBook = (book, shelf) => updateUserBooks(book, shelf);
 
   return (
     <div className="list-books">
@@ -23,12 +25,19 @@ const Home = ({ userBooks, status }) => {
               <Bookshelf
                 bookList={currentBooks}
                 shelfType={"Currently reading"}
+                updateShelf={handleUpdateBook}
               />
               <Bookshelf
                 bookList={wantToReadBooks}
                 shelfType={"Want to Read"}
+                updateShelf={handleUpdateBook}
               />
-              <Bookshelf bookList={readBooks} shelfType={"Read"} />;
+              <Bookshelf
+                bookList={readBooks}
+                shelfType={"Read"}
+                updateShelf={handleUpdateBook}
+              />
+              ;
             </>
           )}
         </div>
