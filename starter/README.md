@@ -1,27 +1,54 @@
 # MyReads Project
 
-This is the starter template for the final assessment project for Udacity's React Fundamentals course. The goal of this template is to save you time by providing a static example of the CSS and HTML markup that may be used, but without any of the React code that is needed to complete the project. If you choose to start with this template, your job will be to add interactivity to the app by refactoring the static code in this template.
+MyReads is a book tracking APP that allows the user to keep track of the books he/she is currently reading, wants to read or has read. It also allows the user to find new books and know about each book's detail (author, information, etc.).
 
-Of course, you are free to start this project from scratch if you wish! Just be sure to use [Create React App](https://reactjs.org/docs/create-a-new-react-app.html) to bootstrap the project.
+## Install Project
 
-## TL;DR
+To download and install the project in your IDE and Code Editor, follow the following steps:
 
-To get started developing right away:
+    $ git clone https://github.com/elisendamonserrat/react-myreads.git
+    $ cd starter
+    $ npm install
 
-- install all project dependencies with `npm install`
-- start the development server with `npm start`
+You can also install the project dependencies with `pnpm install` or `yarn`.
 
-## What You're Getting
+## Features
+
+1. Saved books in different shelfs: read, want to read and currently reading
+2. Search for new books by its title, author(s) or ISBN
+3. Get suggested search terms to find a new books
+4. See each book information detail
+5. Get suggested search terms to find a new books
+6. User book selection persist between page refreshes
+
+## File Structure
 
 ```bash
 ├── CONTRIBUTING.md
 ├── README.md - This file.
-├── SEARCH_TERMS.md # The whitelisted short collection of available search terms for you to use with your app.
 ├── package.json # npm package manager file. It's unlikely that you'll need to modify this.
 ├── public
 │   ├── favicon.ico # React Icon, You may change if you wish.
 │   └── index.html # DO NOT MODIFY
 └── src
+    ├── data # Whitelisted short collection of available search terms for the searchbar feature
+    │   ├── index.js
+    ├── hooks # Folder storing the custom hooks created
+    │    ├── useDebounce.js
+    ├── components # Reusable and generic components that are used in different views/pages
+    │    ├── Book.js
+    │    ├── BooksGridContainer.js
+    │    ├── Bookshelf.js
+    │    ├── LoadingSpinner.js
+    │    ├── SearchInput.js
+    │    ├── SuggestedSearchTerms.js
+    │    ├── Title.js
+    ├── pages # Main views/pages of the APP
+    │    ├── Book.js
+    │    ├── BooksGridContainer.js
+    │    ├── Bookshelf.js
+    ├── utils # Generic and reusable functions
+    │    ├── index.js
     ├── App.css # Styles for your app. Feel free to customize this as you desire.
     ├── App.js # This is the root of your app. Contains static HTML right now.
     ├── App.test.js # Used for testing. Provided with Create React App. Testing is encouraged, but not required.
@@ -33,8 +60,6 @@ To get started developing right away:
     ├── index.css # Global styles. You probably won't need to change anything here.
     └── index.js # You should not need to modify this file. It is used for DOM rendering only.
 ```
-
-Remember that good React design practice is to create new JS files for each component and use import/require statements to include them where they are needed.
 
 ## Backend Server
 
@@ -81,11 +106,7 @@ search(query);
 
 ## Important
 
-The backend API uses a fixed set of cached search results and is limited to a particular set of search terms, which can be found in [SEARCH_TERMS.md](SEARCH_TERMS.md). That list of terms are the _only_ terms that will work with the backend, so don't be surprised if your searches for Basket Weaving or Bubble Wrap don't come back with any results.
-
-## Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). You can find more information on how to perform common tasks [here](https://github.com/facebook/create-react-app/blob/main/packages/cra-template/template/README.md).
+The backend API uses a fixed set of cached search results and is limited to a particular set of search terms, which can be found in [data/index.js](data/index.js). That list of terms are the _only_ terms that will work with the backend, so don't be surprised if your searches for Basket Weaving or Bubble Wrap don't come back with any results.
 
 ## Contributing
 
