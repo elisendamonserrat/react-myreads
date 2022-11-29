@@ -9,8 +9,11 @@ To download and install the project in your IDE and Code Editor, follow the foll
     $ git clone https://github.com/elisendamonserrat/react-myreads.git
     $ cd starter
     $ npm install
+    $ npm start
 
 You can also install the project dependencies with `pnpm install` or `yarn`.
+
+To launch the project run the following command $ npm start
 
 ## Features
 
