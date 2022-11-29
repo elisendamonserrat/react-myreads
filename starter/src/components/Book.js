@@ -34,7 +34,7 @@ const Book = ({ bookInfo, shelfTypeValue, updateBookShelf }) => {
           ></div>
           <div className="book-shelf-changer">
             <select value={shelfTypeValue} onChange={handleChange}>
-              <option value="none" disabled>
+              <option value="moveTo" disabled>
                 Move to...
               </option>
               {bookShelfOptions.map((option) => (
